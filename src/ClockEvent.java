@@ -1,3 +1,4 @@
+package printsim;
 public interface ClockEvent {
 	
 	/**

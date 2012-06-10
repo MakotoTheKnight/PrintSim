@@ -5,6 +5,7 @@
    Written by Jason Black, completed 6 November 2008
 */
 
+package printsim;
 public class Job implements ClockEvent {
 	
 	private int MAX_WAIT_TIME;

@@ -8,7 +8,7 @@
    Written by Jason Black, 19 November 2008
    
 */
-
+package printsim;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.text.DecimalFormat;

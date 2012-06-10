@@ -4,7 +4,7 @@
     does.  Individual sections commented in-line.
 
 */
-
+package printsim;
 import javax.swing.JOptionPane;
 import java.io.IOException;
 

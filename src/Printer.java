@@ -9,9 +9,9 @@
    Written by Jason Black, 23 October 2008
 */
 
+package printsim;
 import java.util.ArrayList;
 import java.text.DecimalFormat; // Formatting decimal places
-
 public class Printer implements ClockEvent {
 
 	protected int printer_ID, jobNumber, departureTick, arrivalTick, currentTick, changeoverTick;

@@ -2,9 +2,8 @@
     A custom queue of mine, written personally.
     Written by Jason Black, 1 November 2008
 */
-
+package printsim;
 import java.util.ArrayList;
-
 public class Queue implements ClockEvent {
 
 	private ArrayList<Job> queue = new ArrayList<Job>(25);

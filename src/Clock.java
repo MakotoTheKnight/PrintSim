@@ -5,7 +5,7 @@
     Written by Jason Black, 29 October 2008
 */
 
-
+package printsim;
 import java.util.Scanner; // Used for the pause() method
 import java.io.*; // Used to write the output file (summations)
 

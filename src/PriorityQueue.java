@@ -2,9 +2,8 @@
    The class which is the priority queue.  A lot of functions are ripped from Queue.
    Written by Jason Black, 17 November 2008
 */
-
+package printsim;
 import java.util.ArrayList;
-
 public class PriorityQueue extends Queue implements ClockEvent {
 
 	private Queue[] queue = new Queue[3];  // hold specific levels of jobs
