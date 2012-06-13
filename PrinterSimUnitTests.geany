@@ -9,7 +9,7 @@ indent_mode=2
 
 [project]
 name=PrinterSimUnitTests
-base_path=/home/makoto/PrintSim/bin
+base_path=/home/makoto/PrintSim
 description=
 file_patterns=
 
@@ -18,15 +18,16 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=8
-FILE_NAME_0=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/Clock.java;0;4
+current_page=3
+FILE_NAME_0=5819;Java;0;16;1;1;0;/home/makoto/PrintSim/src/Clock.java;0;4
 FILE_NAME_1=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/ClockEvent.java;0;4
-FILE_NAME_2=259;Java;0;16;1;1;0;/home/makoto/PrintSim/src/Job.java;0;4
-FILE_NAME_3=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/MultiPrinter.java;0;4
-FILE_NAME_4=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/Printer.java;0;4
-FILE_NAME_5=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/PriorityQueue.java;0;4
-FILE_NAME_6=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/Queue.java;0;4
-FILE_NAME_7=699;Java;0;16;1;1;0;/home/makoto/PrintSim/src/SimDriver.java;0;4
+FILE_NAME_2=3035;Java;0;16;1;1;0;/home/makoto/PrintSim/src/Job.java;0;4
+FILE_NAME_3=956;Java;0;16;1;1;0;/home/makoto/PrintSim/src/JobTest.java;0;4
+FILE_NAME_4=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/MultiPrinter.java;0;4
+FILE_NAME_5=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/Printer.java;0;4
+FILE_NAME_6=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/PriorityQueue.java;0;4
+FILE_NAME_7=0;Java;0;16;1;1;0;/home/makoto/PrintSim/src/Queue.java;0;4
+FILE_NAME_8=699;Java;0;16;1;1;0;/home/makoto/PrintSim/src/SimDriver.java;0;4
 
 [VTE]
 last_dir=/home/makoto/PrintSim/src
@@ -40,13 +41,13 @@ EX_01_CM=java -cp ../bin/ "printsim.%e"
 EX_01_WD=
 filetypes=Java;
 NF_00_LB=_Make
-NF_00_CM=javac -sourcepath src/ -cp src/ -d ../bin/ *.java
+NF_00_CM=javac -sourcepath src/ -cp /home/makoto/code/Java/junit/junit-4.10.jar:src/:%p/bin/ -d %p/bin/ %f
 NF_00_WD=
 JavaFT_01_LB=
 JavaFT_01_CM=
 JavaFT_01_WD=
 NF_01_LB=Make Custom _Target
-NF_01_CM=make 
+NF_01_CM=
 NF_01_WD=
 NF_02_LB=Make _Object
 NF_02_CM=make %e.o

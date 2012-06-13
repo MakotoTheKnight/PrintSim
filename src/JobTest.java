@@ -10,51 +10,65 @@ import printsim.Job;
 import printsim.Queue;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.junit.Assume.*;
 import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
+import org.hamcrest.BaseMatcher;
+import org.hamcrest.core.AnyOf;
 
 public class JobTest {
 	
 	@Test
-	public boolean testDefaultConstructor() {
-		boolean[] fieldTests = new boolean[4];
-		String[] paperColors = {"White", "Goldenrod", "Gray"};
-		String[] inkColors = {"Black", "Gray"};
+	public void testJobNumber() {
+		assertTrue(new Job().getJobNumber() >= 1);
+	}
+	
+	@Test
+	public void testDuration() {
 		Job j = new Job();
-		//assertTrue(j.getJobNumber() >= 1);
-		//assertTrue(j.getDuration() >= 1 && j.getDuration() <= 6);
-		//assertEquals(j.get >= 1 && j.getDuration() <= 6);
-		//assertTrue(j.getDuration() >= 1 && j.getDuration() <= 6);
-		System.out.println("Job number = " + j.getJobNumber());
-		System.out.println("Job duration = " + j.getDuration());
-		System.out.println("Job paper color = " + j.getPaperColor());
-		System.out.println("Job ink color = " + j.getInkColor());
-		//Assert a = new Assert();
-		//a.assertTrue(j.
-		return false;
+		assertTrue(j.getDuration() >= 1 && j.getDuration() <= 6);
 	}
 	
 	@Test
-	public boolean testUpdate() {
-		return false;
+	public void testArrivalTime() {
+		assertTrue(new Job().getArrivalTime() >= 0);
 	}
 	
 	@Test
-	public boolean testComplete() {
-		return false;
+	public void testUpdate() {
+		int spinCount = 0;
+		Queue q = new Queue(1, "White", "Black");
+		Job j = new Job();
+		assertTrue(j.getQueueNumber() == 0);
+		assertTrue(!(j.isQueued()));
+		assertTrue(j.getIdleTime() == 0);
+		while(!(q.getInkColor().equals(j.getInkColor()) && q.getPaperColor().equals(j.getPaperColor()))) {
+			spinCount++;
+			j = new Job();
+		}
+		q.enqueue(j);
+		q.update();
+		assertTrue(q.peek(0).getQueueNumber() == 1);
+		assertTrue(q.peek(0).isQueued());
+		assertTrue(q.peek(0).getIdleTime() == 1);
 	}
 	
 	@Test
-	public boolean testQueued() {
-		return false;
+	public void testComplete() {
+	}
+	
+	@Test
+	public void testQueued() {
 	}
 	
 	public static void main(String[] args) {
 	
 		JobTest jt = new JobTest();
-		jt.testDefaultConstructor();
-		
+		jt.testJobNumber();
+		jt.testDuration();
+		jt.testArrivalTime();
+		jt.testUpdate();
 		
 	}
 	
