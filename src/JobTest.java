@@ -16,6 +16,7 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.core.AnyOf;
+import junit.framework.TestSuite;
 
 public class JobTest {
 	
@@ -54,22 +55,12 @@ public class JobTest {
 		assertTrue(q.peek(0).getIdleTime() == 1);
 	}
 	
-	@Test
+	//@Test
 	public void testComplete() {
 	}
 	
-	@Test
+	//@Test
 	public void testQueued() {
-	}
-	
-	public static void main(String[] args) {
-	
-		JobTest jt = new JobTest();
-		jt.testJobNumber();
-		jt.testDuration();
-		jt.testArrivalTime();
-		jt.testUpdate();
-		
 	}
 	
 }
