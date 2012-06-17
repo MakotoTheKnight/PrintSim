@@ -147,13 +147,7 @@ public class Clock implements ClockEvent {
 			orders = new Job[jobs];
 			for(int i = 0; i < jobs; i++) {
 				currentJob++;
-				if(bias) {
-					orders[i] = new Job(bias); // Construct for biased jobs
-				} else if(priorities) { // Using Priority-switching schema
-					orders[i] = new Job(bias, WAIT_TIME); // Construct for impatient jobs
-				} else {
-					orders[i] = new Job(); // Normal construct for normal jobs
-				}
+				orders[i] = new Job(bias); // Construct for biased jobs
 				for(int j = 0; j < queues.length; j++) {
 					queues[j].enqueue(orders[i]);
 				}
@@ -165,29 +159,6 @@ public class Clock implements ClockEvent {
 		generatedJobInformation = jobs + " job(s) generated this tick.\n" + reply;
 	}
 
-	public void generateJob(PriorityQueue[] queues) {
-
-		Job[] orders;
-		String reply = "";
-		int jobs = generateNumberOfJobs();
-
-		if(jobs > 0) {
-			orders = new Job[jobs];
-			for(int i = 0; i < jobs; i++) {
-				orders[i] = new Job(priorities, WAIT_TIME);
-				currentJob++;
-			}
-			for(PriorityQueue q: queues) {
-				for(Job j: orders) {
-					q.enqueue(j);
-				}
-			}
-			for(Job j: orders) {
-				reply += "\t" + j.toString() + "\n";
-			}
-		}
-		generatedJobInformation = jobs + " job(s) generated this tick.\n" + reply;
-	}
 
 
 

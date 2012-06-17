@@ -23,7 +23,6 @@ public class Printer implements ClockEvent {
 	protected String paperColor, inkColor, output;
 	protected ArrayList<String> oldConfig, newConfig;
 	protected Queue currentQueue, softQueue;
-	protected PriorityQueue currentPriQueue, softPriQueue;
 	protected Job processingJobs;
 	protected ArrayList<Job> completeJobs;
 
@@ -61,7 +60,6 @@ public class Printer implements ClockEvent {
 		queue_ID = jobCounter = changes = 0;
 		settingInk = settingPaper = usingPriorityQueue = false;
 		currentQueue = softQueue = null;
-		currentPriQueue = softPriQueue = null;
 		departureTick = arrivalTick = changeoverTick = 0;
 		currentTick = beginChangeTick = Clock.getCurrentTick();
 		completeJobs = new ArrayList<Job>(300);
@@ -96,10 +94,6 @@ public class Printer implements ClockEvent {
 			idleCounter++;
 		}
 
-		if(!(currentPriQueue == null) || !(softPriQueue == null)) {
-			usingPriorityQueue = true;
-		}
-
 		currentTick = Clock.getCurrentTick();
 		removeQueue();
 	}
@@ -122,9 +116,6 @@ public class Printer implements ClockEvent {
 		hasQueue = busy = setPrintJob = false;
 		queue_ID = 0;
 		currentQueue = softQueue = null;
-		if(usingPriorityQueue) {
-			currentPriQueue  = softPriQueue = null;
-		}
 		processingJobs = null;
 	}
 	//Remove a queue from this Printer
@@ -135,14 +126,6 @@ public class Printer implements ClockEvent {
 			" <{] [}> Printer #" + printer_ID + "\n";
 			currentQueue = softQueue = null;
 			hasQueue = false;
-			reset();
-		}
-
-		if(currentPriQueue != null && processingJobs == null && currentPriQueue.canDetach()) {
-			currentPriQueue.detach();
-			output = "\t{WARNING} PriorityQueue #" + currentPriQueue.queue_ID +
-			" <{] [}> Printer #" + printer_ID + "\n";
-			currentPriQueue = softPriQueue = null;
 			reset();
 		}
 	}
@@ -177,68 +160,7 @@ public class Printer implements ClockEvent {
             }
 		}
 	}
-	public void symlink(PriorityQueue[] queues) {
-		for(PriorityQueue q: queues) {
-			if(q.canSymlink()) {
-				//System.out.println("{MAKOTO} Symlinkable!");
-				String paper = q.getPaperColor();
-				String ink = q.getInkColor();
-				//System.out.println("{MAKOTO} Paper/Ink: " + paper + "/" + ink);
-				//System.out.println("{MAKOTO} Printer Paper/Ink: " + paperColor + "/" + inkColor);
-				if(ink.equals(inkColor) && paper.equals(paperColor)) {
-				//	System.out.println("{MAKOTO} Equivalent paper and ink color...");
-					q.setPrinterID(printer_ID);
-					queue_ID = q.queue_ID;
-					q.setAttached();
-					hasQueue = true;
-					currentPriQueue = q;
-					output = "\t{NOTICE} " + q.toString() +
-					" <{]-[}> Printer #" + printer_ID + "; successful.\n";
-					busy = false;
-					break;
-				}
-				//System.out.println("{MAKOTO} Something broke around here...");
-			}
-		}
-	}
 
-	//Print without a signature is used for PriorityQueues ONLY!
-	public void print() {
-
-		output = "";
-		if(!(setPrintJob)) {
-			if(!(currentPriQueue == null) && !busy) {
-				if(!(currentPriQueue.peek() == null) && currentPriQueue.peek().canPrint()) {
-					processingJobs = currentPriQueue.dequeue();
-					setPrintJob = true;
-					print(processingJobs);
-				} else {
-					removeQueue();
-				}
-			}
-		} else {
-			print(processingJobs);
-		}
-	}
-
-
-	public void print(boolean multiPrinting) {
-
-		output = "";
-		if(!(setPrintJob)) {
-			if(!(currentQueue == null) && !busy) {
-				if(!(currentQueue.peek(0) == null) && currentQueue.peek(0).canPrint()) {
-					processingJobs = currentQueue.dequeue();
-					setPrintJob = true;
-					print(processingJobs);
-				} else {
-					removeQueue();
-				}
-			}
-		} else {
-			print(processingJobs);
-		}
-	}
 	/*  The print() routine assumes that the job it's getting CAN print, so it won't question
 	    or check that, thanks to the canPrint() method.
 	*/
@@ -250,7 +172,7 @@ public class Printer implements ClockEvent {
 
 			currentJob.update();
 			busy = true;
-			currentJob.declarePrinting();
+			currentJob.setPrinting();
 			// The job MUST be complete on tick C = (a + i + d), where i = idle time, d = duration,
 			// a = arrival time, and C = current tick
 			// Example:  Job arrives at 37, idle for 20, duration 6.  Will be done on 63.
@@ -362,7 +284,7 @@ public class Printer implements ClockEvent {
 					q.detach();
 					reset();
 				}
-				if(!(q.isEmpty()) && !(q.isSoftlinked()) && q.peek(0).getPriority() && q.printer_ID == 0) {
+				if(!(q.isEmpty()) && !(q.isSoftlinked()) && q.printer_ID == 0) {
 					//reset();
 					softQueue = q;
 					softQueue.setSoftlinked();
@@ -391,89 +313,7 @@ public class Printer implements ClockEvent {
 				}
 			}
 		}
-	
-	public void changeConfiguration(PriorityQueue[] queues) {
-
-		if(softPriQueue == null) {
-			findQueue(queues);
-		} else if(softPriQueue.isEmpty()) { // Check to see if the queue went empty prematurely
-			softPriQueue = null;
-			changeConfiguration(queues);
-		} else { // softPriQueue IS already set
-
-			String queue_paper = softPriQueue.getPaperColor();
-			String queue_ink = softPriQueue.getInkColor();
-
-
-			if((!settingInk && !settingPaper) && !busy) {
-
-				beginChangeTick = Clock.getCurrentTick();
-				if(!(inkColor.equals(queue_ink)) && paperColor.equals(queue_paper) && !settingInk) {
-
-					changeoverTick += INK_CHANGEOVER;
-					busy = true;
-					settingInk = true;
-
-				} else if(!(paperColor.equals(queue_paper)) && inkColor.equals(queue_ink)
-				&& !settingPaper) {
-
-					changeoverTick += PAPER_CHANGEOVER;
-					busy = true;
-					settingPaper = true;
-
-				} else if(!(paperColor.equals(queue_paper)) &&
-					   !(inkColor.equals(queue_ink)) && !settingPaper && !settingInk)  {
-
-					changeoverTick += (PAPER_CHANGEOVER + INK_CHANGEOVER);
-					busy = true;
-					settingPaper = settingInk = true;
-				}
-			} else {
-				output = "\t{ALERT} Printer #: " + printer_ID  + " to change config on tick " +
-				(beginChangeTick + changeoverTick);
-				//System.out.println(beginChangeTick);
-				//System.out.println(changeoverTick);
-				if(Clock.getCurrentTick() == (beginChangeTick + changeoverTick)) {
-					changelog.add(Clock.getCurrentTick());
-					oldConfig.add("{" + paperColor + " & " + inkColor + "}");
-					inkColor = queue_ink;
-					paperColor = queue_paper;
-					newConfig.add("{" + paperColor + " & " + inkColor + "}");
-					busy = false;
-					currentPriQueue = softPriQueue;
-					output = "\t{NOTICE} Printer #" + printer_ID + " [}>-<{] " +
-					currentPriQueue.toString() + "; successful.";
-					softPriQueue.detach();
-					softPriQueue = null;
-					changes++;
-					hasQueue = true;
-				}
-			}
-		}
-	}
-	protected void findQueue(PriorityQueue[] queues) {
-
-		if(!(hasQueue) && softPriQueue == null && !busy) {
-			for(PriorityQueue q: queues) {
-				if(q.canDetach()) {
-					q.detach();
-					reset();
-				}
-				if(!(q.isEmpty()) && processingJobs == null && !q.isSoftlinked()) {
-					softPriQueue = q;
-					queue_ID = softPriQueue.queue_ID;
-					softPriQueue.setSoftlinked();
-					softPriQueue.setPrinterID(printer_ID);
-					beginChangeTick = Clock.getCurrentTick();
-					break;
-				} else {
-					q.detach();
-					reset();
-				}
-			}
-		}
-	}
-	// Returns the total statistics of this printer.
+	//Returns the total statistics of this printer.
 	public String getStats() {
 
 		DecimalFormat df = new DecimalFormat("###.##");
@@ -506,15 +346,10 @@ public class Printer implements ClockEvent {
 		Job j = null;
 		for(int i = 0; i < jobReadout.length; i++) {
 			j = completeJobs.get(i);
-			Integer priority = new Integer(0);
 			int arrival = j.getArrivalTime();
 			String level = "";
 			String inkColor = j.getInkColor();
 			String paperColor = j.getPaperColor();
-			if(j.getRealPriorityLevel() > 0) {
-				priority = j.getRealPriorityLevel();
-				level = ", " + Integer.toString(priority);
-			}
 			if(paperColor.equals("White")) {
 				paperColor = "Wht";
 			} else if(paperColor.equals("Goldenrod")) {

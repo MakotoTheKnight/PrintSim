@@ -7,7 +7,6 @@
 package printsim;
 import javax.swing.JOptionPane;
 import java.io.IOException;
-import printsim.*;
 
 public class SimDriver {
 
