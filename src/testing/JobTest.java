@@ -33,7 +33,7 @@ public class JobTest {
 	public void testUpdate() {
 	    Queue q = new Queue(1, "White", "Black");
 	    Job j = new Job(false);
-	    assertTrue(j.getQueueNumber() == 0);
+	    assertTrue(j.getQNumber() == 0);
 	    assertTrue(!(j.isQueued()));
 	    assertTrue(j.getIdleTime() == 0);
 	    while(!(q.getInkColor().equals(j.getInkColor()) && q.getPaperColor().equals(j.getPaperColor()))) {

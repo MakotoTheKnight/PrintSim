@@ -9,7 +9,7 @@
 */
 
 package printsim;
-public class Job implements ClockEvent {
+public class Job extends Task implements ClockEvent {
 	
 	private int jobNumber, idleCounter, queueNumber, departureTime;
 	private final int arrivalTime, duration;

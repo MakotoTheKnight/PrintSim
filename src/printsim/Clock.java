@@ -128,12 +128,6 @@ public class Clock implements ClockEvent {
 		return new Queue(id, uniquePaper[i], uniqueInk[j]);
 	}
 
-	// Implementation not syntatically different than the regular Queue, I just had to change the signature.
-	public static PriorityQueue setUniqueQueue(PriorityQueue q, int id, int i, int j) {
-		return new PriorityQueue(id, uniquePaper[i], uniqueInk[j]);
-	}
-
-
 
 	/* Generate a job and place it in the queue in the same step (legal).  Uses either Queue type.*/
 
