@@ -115,9 +115,9 @@ public class Clock implements ClockEvent {
 			while(!(input.hasNextInt())) {
 				// Put the entire simulation into an infinite loop until
 				// the user types a number.
-				
+
              }
-            
+
 		}
 	}
 

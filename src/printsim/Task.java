@@ -1,83 +1,89 @@
 /**
- * 
+ *
  */
 package printsim;
 
 /**
- * Define an interface that specifies what a task should do.
- * 
+ * Define an abstraction that specifies what a task should do.
+ *
  * We define a task to be an action, which may be performed in parallel,
  * that takes a finite amount of time.  Indefinite length tasks are not supported.
- * 
- * 
+ *
+ *
  * @author makoto
  *
  */
 public abstract class Task {
-    
-    private int taskNumber, timeIdle, qNumber, timeComplete;
-    private int timeCreated, timeWorking;
-    private boolean inQ = false;
-    
+
+    protected int taskNumber;
+    protected int timeIdle;
+    protected int qNumber;
+    protected int timeComplete;
+    protected int timeCreated;
+    protected int timeWorking;
+    protected boolean contained = false;
+
     /**
-     * Report the contents of this Task.  This should be overridden in the subclass.
+     * Report the contents of this Task.
+     *
+     * Useful information for each Task is implementation dependent.
      * @return a String containing useful state information about this task
      */
     @Override
     public String toString() {
-	return "";
+	    return "";
     }
-    
+
     /**
      * Retrieve the generated task's task number.
      * @return the task number
      */
-    
+
     public int getTaskNumber() {
-	return taskNumber;
+	    return taskNumber;
     }
-    
+
     /**
      * Retrieve the generated task's idle time.
      * @return the time spent not doing useful work
      */
-    
+
     public int getIdleTime() {
-	return timeIdle;
+	    return timeIdle;
     }
-    
+
     public int getQNumber() {
-	return qNumber;
+	    return qNumber;
     }
-    
+
     public int getTimeComplete() {
-	return timeComplete;
+	    return timeComplete;
     }
-    
+
     public int getTimeCreated() {
-	return timeCreated;
+	    return timeCreated;
     }
-    
+
     public int getTimeWorking() {
-	return timeWorking;
+	    return timeWorking;
     }
-    
+
     public void setQNumber(int newQ) {
-	qNumber = (newQ != qNumber) ? newQ : qNumber;  
+	    qNumber = (newQ != qNumber) ? newQ : qNumber;
     }
-    
-    public boolean getInQ() {
-	return inQ;
+
+    public boolean getContained() {
+	    return contained;
     }
-    public void setInQ() {
-	if(!inQ) {
-	    inQ = true;
-	}
+    public void setContained() {
+        if(!contained) {
+	        contained = true;
+	    }
     }
-    
-    public void unsetInQ() {
-	if(inQ) {
-	    inQ = false;
-	}
+
+    public void unsetContained() {
+        if(contained) {
+	        contained = false;
+	    }
     }
 }

@@ -131,7 +131,7 @@ public class Printer implements ClockEvent {
 	}
 	// symlink(Queue or PriorityQueue) symbolically links a Queue to a Printer.
 	public void symlink(Queue[] queues, boolean multiPrinting) {
-		
+
 		for(Queue q: queues) {
 
             if(q.canSymlink()) {
@@ -140,7 +140,7 @@ public class Printer implements ClockEvent {
             	String ink = q.getInkColor();
 
                 if(inkColor.equals(ink) && paperColor.equals(paper)) {
-				
+
                     hasQueue = true;
                     currentQueue = q;
                     softQueue = null;
@@ -178,26 +178,26 @@ public class Printer implements ClockEvent {
 			// Example:  Job arrives at 37, idle for 20, duration 6.  Will be done on 63.
 
 			if(!(hasBegun)) {
-				
+
 				output = "\t{STARTPRINT} Printer #" + printer_ID + " starts " +
 				currentJob.toString() + " this tick.\n";
 				hasBegun = true;
 			} else {
 				output = "\t{...PRINT} Printer #" + printer_ID + ", working on " +
 				currentJob.toString() + "\n";
-				
+
 			}
 
-			if(currentJob.getDepartureTime()-1 == Clock.getCurrentTick()) {
-				
+			if(currentJob.getTimeComplete()-1 == Clock.getCurrentTick()) {
+
 				output = "\t{ENDPRINT} Printer #" + printer_ID +
-				" completes Job #" + currentJob.getJobNumber() + " on this tick.\n";
+				" completes Job #" + currentJob.getTaskNumber() + " on this tick.\n";
 			}
 				completeJobs.add(processingJobs);
 				busy = hasBegun = setPrintJob = false;
 				processingJobs = null;
 				jobCounter++;
-			
+
 		} else {
 			output = "";
 		}
@@ -248,7 +248,7 @@ public class Printer implements ClockEvent {
 				} else {
 					output = "\t{ALERT} MultiPrinter #: " + printer_ID  + " to change config on tick " +
 					(beginChangeTick + changeoverTick);
-					
+
 				}
 				//System.out.println(beginChangeTick);
 				//System.out.println(changeoverTick);
@@ -296,7 +296,7 @@ public class Printer implements ClockEvent {
 					reset();
 				}
 			}
-			
+
 		} else if(!(hasQueue) && !(busy)) {
 				for(Queue q: queues) {
 					if(!(q.isEmpty()) && !q.isSoftlinked() && q.printer_ID == 0) {
@@ -346,7 +346,7 @@ public class Printer implements ClockEvent {
 		Job j = null;
 		for(int i = 0; i < jobReadout.length; i++) {
 			j = completeJobs.get(i);
-			int arrival = j.getArrivalTime();
+			int arrival = j.getTimeCreated();
 			String level = "";
 			String inkColor = j.getInkColor();
 			String paperColor = j.getPaperColor();
@@ -363,10 +363,10 @@ public class Printer implements ClockEvent {
 				inkColor = "Gry";
 			}
 
-			jobReadout[i] = "{Job #" + j.getJobNumber() + ", " + paperColor +
-			"/" + inkColor + ", " + arrival + ", " + j.getDuration() + level + "}";
+			jobReadout[i] = "{Job #" + j.getTaskNumber() + ", " + paperColor +
+			"/" + inkColor + ", " + arrival + ", " + j.getTimeWorking() + level + "}";
 			avgIdle += j.getIdleTime();
-			avgLength += j.getDuration();
+			avgLength += j.getTimeWorking();
 			j = null;
 		}
 
@@ -380,7 +380,7 @@ public class Printer implements ClockEvent {
 			}
 
 			reply += jobReadout[i] + "\t";
-			
+
 		}
 		String afterword = "";
 		afterword += "\n\n";

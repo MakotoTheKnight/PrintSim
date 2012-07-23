@@ -11,36 +11,36 @@ public class Queue implements ClockEvent {
     private int attachLength;
 	private boolean attached, softlinked;
 	private final String INK_COLOR, PAPER_COLOR;
-	
+
 	public Queue(int id, String paper, String ink) {
-		
+
 		queue_ID = id;
 		PAPER_COLOR = paper;
 		INK_COLOR = ink;
 		printer_ID = attachLength = 0;
 		softlinked = attached = false;
-		
+
 	}
-		
+
 	// ************ BEGIN INTERFACE FUNCTIONS ************
-	
+
 	/* toString():  Return the String status of any object. */
 	public String toString() {
-	
+
 		return "Queue #" + queue_ID + " {" + PAPER_COLOR + " paper, " +
 		INK_COLOR + " ink, total size " + queue.size() + "}";
 	}
-	
-	
+
+
 	/* update(): Done on essentially every tick. */
 	public void update() {
-		
+
 		if(attached) {
             attachLength++;
 		}
 		for(Job j: queue) {
 			j.update();
-			j.setQueueNumber(queue_ID);
+			j.setQNumber(queue_ID);
 		}
 	}
 
@@ -66,13 +66,13 @@ public class Queue implements ClockEvent {
 	//Adds a job into the Queue
 	public void enqueue(Job j) {
 		if(j.getPaperColor().equals(PAPER_COLOR) && j.getInkColor().equals(INK_COLOR)) {
-			j.setQueueNumber(queue_ID);
-			j.setQueued();
+			j.setQNumber(queue_ID);
+			j.setContained();
 			queue.add(j);
 		}
 	}
-	
+
 	// ************ END INTERFACE FUNCTIONS ************
 
-	
+
 }

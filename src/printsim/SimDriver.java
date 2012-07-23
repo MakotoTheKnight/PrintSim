@@ -14,9 +14,9 @@ public class SimDriver {
 	public static int paperType = 0, inkType = 0, tick = 0, totalJobs = 0, interval = -1, duration = 0;
 	public static int remainingTicks = 0;
 	public static Clock overlord;
-	public static MultiPrinter mprinter;
+	//public static MultiPrinter mprinter;
 	public static Printer[] printers;
-	public static PriorityQueue[] priQueues = new PriorityQueue[6]; // Can be set by default automatically
+	//public static PriorityQueue[] priQueues = new PriorityQueue[6]; // Can be set by default automatically
 	public static Queue[] queues = new Queue[6]; // Can be set by default automatically
 	public static String output = "", file = "";
 
@@ -31,8 +31,7 @@ public class SimDriver {
 		"Experiment[] experiments =\n1) Default, no experiments at all\n" +
 		"2) Increase to 4 printers\n3) Printer -> Longest waiting queue\n" +
 		"4) 70% B/W Jobs\n5) 70% B/W Jobs + 1 Constant B/W printer\n" +
-		"6) Job priority (uses PriorityQueue)\n7) Custom: Multiprinter\n" +
-		"8) Overlord Mode (assumes no experiments)\n" +
+		"6) Overlord Mode (assumes no experiments)\n" +
 		"-1) Abort\n"));
 
 		switch(experiment) {
@@ -69,7 +68,7 @@ public class SimDriver {
 				}
 				output += "Experiment #2:  Increase to Four Printers\n";
 				break;
-                
+
 			case 3:
 				int patience = Integer.parseInt(JOptionPane.showInputDialog(null,
 				"How many ticks should a Job wait before it DEMANDS service?"));
@@ -122,46 +121,7 @@ public class SimDriver {
 				printers[0] = new Printer(true, 1);
 				output += "Experiment #5:  70% Black/White Job Bias + 1 Static B/W Printer\n";
 				break;
-
 			case 6:
-				experimental = true;
-				overlord = new Clock(true);
-				for(int i = 0; i < priQueues.length; i++) {
-					if(inkType == 2) {
-						inkType = 0;
-						paperType++;
-					}
-					priQueues[i] = overlord.setUniqueQueue(priQueues[i],
-					(i+1), paperType, inkType++);
-
-				}
-				printers = new Printer[3];
-				for(int j = 0; j < printers.length; j++) {
-					printers[j] = new Printer((j+1), false);
-				}
-				output += "Experiment #6: Priority Jobs/Priority Queues\n";
-				break;
-
-			case 7:
-				experimental = true;
-				overlord = new Clock();
-				for(int i = 0; i < queues.length; i++) {
-					if(inkType == 2) {
-						inkType = 0;
-						paperType++;
-					}
-					queues[i] = overlord.setUniqueQueue((i+1), paperType, inkType++);
-				}
-				multiPrinting = true;
-				printers = new Printer[2];
-				mprinter = new MultiPrinter(1, false);
-				for(int j = 0; j < printers.length; j++) {
-					printers[j] = new Printer((j+1)+1, false);
-				}
-				output += "Experiment #7:  The MultiPrinter - handling " + mprinter.getSize() +
-				" different bins AS one\n";
-				break;
-			case 8:
 				int jobs = Integer.parseInt(JOptionPane.showInputDialog(null, "How many jobs per tick do you want this simulation to generate?"));
 				int maxlength = Integer.parseInt(JOptionPane.showInputDialog(null, "What is the LONGEST job you want to generate?"));
 				int clock = Integer.parseInt(JOptionPane.showInputDialog(null, "How long is this simulation going to run?"));
@@ -187,7 +147,7 @@ public class SimDriver {
 				break;
 
 		}
-		
+
 		// Specify if we're writing to file or not.  If we aren't, all data is dumped to the terminal.
 		// If we are, only the summary is written to file.
 		int filewrite = JOptionPane.showConfirmDialog(null, "Are we saving to a file?");
@@ -209,7 +169,7 @@ public class SimDriver {
 		} else {
 			writeToTerminal = false;
 		}
-		
+
 
 		/* --- END I/O FUNCTIONS ---*/
 
@@ -237,10 +197,6 @@ public class SimDriver {
 					for(Queue q: queues) {
 						remainingTicks += q.getSize();
 					}
-				} else if(!(multiPrinting)) {
-					for(PriorityQueue q: priQueues) {
-						remainingTicks += q.getSize();
-					}
 				}
 			}
 			overlord.pause(interval);
@@ -264,10 +220,6 @@ public class SimDriver {
 			} while(totalJobs > 0);
 		}
 
-		if(multiPrinting) {
-			output += "\n" + mprinter.getStats();
-			System.out.println(mprinter.getStats());
-		}
 
 		for(Printer pr: printers) {
 			if(writeToFile) {
@@ -278,7 +230,7 @@ public class SimDriver {
 		}
 
 		/* *********** END CLEAN-UP LOOP *********** */
-		
+
 		if(writeToFile) {
 			try {
 				overlord.writeToFile(file, output);
@@ -286,8 +238,8 @@ public class SimDriver {
 				System.out.println("Could not write to file, sorry.");
 			}
 		}
-			
-		
+
+
 	}
 
 
@@ -319,7 +271,7 @@ public class SimDriver {
 		for(Printer pr: printers) {
 			pr.update();
 			pr.symlink(queues, multiPrinting);
-			pr.print(multiPrinting);
+			//pr.print(multiPrinting);
 
 			if(!(pr.isAttached())) {
 				pr.changeConfiguration(queues, multiPrinting);
@@ -342,7 +294,7 @@ public class SimDriver {
 
 		if(!(overtime) && !(multiPrinting)) {
 
-			overlord.generateJob(priQueues);
+			//overlord.generateJob(priQueues);
 			totalJobs = 0;
 			if(writeToTerminal) {
 				System.out.println(overlord.toString());
@@ -359,68 +311,7 @@ public class SimDriver {
 				System.out.println(overlord.toString() + totalJobs + " Job(s) left.\n");
 		}
 		totalJobs = 0;
-	
 
-// CASE:  Priority Queue experiment
-		if(!(multiPrinting)) {
-
-			for(PriorityQueue pq: priQueues) {
-				pq.update();
-				totalJobs += pq.getNumberOfJobs();
-			}
-
-			for(Printer pr: printers) {
-				pr.update();
-				pr.symlink(priQueues);
-				pr.print();
-
-				if(!(pr.isAttached())) {
-					pr.changeConfiguration(priQueues);
-				}
-
-				if(!(pr.getCurrentJob() == null)) {
-					totalJobs++;
-				}
-				if(!(pr.printStatus().equals("")) && writeToTerminal) {
-					System.out.println(pr.printStatus());
-				}
-			}
-		} else {
-			totalJobs = 0;
-
-			for(Queue q: queues) {
-				q.update();
-				totalJobs += q.getSize();
-			}
-			mprinter.update();
-			mprinter.print();
-			if(!(mprinter.isAttached())) {
-				mprinter.changeConfiguration(queues);
-			}
-
-			if(!(mprinter.printStatus().equals("")) && writeToTerminal) {
-				System.out.println(mprinter.printStatus());
-			}
-
-			totalJobs += mprinter.remainingJobs();
-
-			for(Printer pr: printers) {
-				pr.update();
-				pr.symlink(queues, multiPrinting);
-				pr.print(multiPrinting);
-
-				if(!(pr.isAttached())) {
-					pr.changeConfiguration(queues, multiPrinting);
-				}
-				
-				if(!(pr.getCurrentJob() == null)) {
-					totalJobs++;
-				}
-				if(!(pr.printStatus().equals("")) && writeToTerminal) {
-					System.out.println(pr.printStatus());
-				}
-			}
-		}
 	}
         /* *********** END HELPER METHODS *********** */
 }
