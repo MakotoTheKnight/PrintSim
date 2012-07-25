@@ -34,7 +34,7 @@ public class JobTest {
         Queue q = new Queue(1, "White", "Black");
         Job j = new Job(false);
         assertTrue(j.getQNumber() == 0);
-        assertTrue(!(j.getContained()));
+        assertTrue(!(j.isContained()));
         assertTrue(j.getIdleTime() == 0);
         while(!(q.getInkColor().equals(j.getInkColor()) && q.getPaperColor().equals(j.getPaperColor()))) {
             j = new Job(false);
@@ -42,7 +42,7 @@ public class JobTest {
         q.enqueue(j);
         q.update();
         assertTrue(q.peek(0).getQNumber() == 1);
-        assertTrue(q.peek(0).getContained());
+        assertTrue(q.peek(0).isContained());
         assertTrue(q.peek(0).getIdleTime() == 1);
     }
 
@@ -58,14 +58,14 @@ public class JobTest {
         Queue q = new Queue(1, "White", "Black");
         Job j = new Job(false);
         assertTrue(j.getQNumber() == 0);
-        assertTrue(!(j.getContained()));
+        assertTrue(!(j.isContained()));
         assertTrue(j.getIdleTime() == 0);
         while(!(q.getInkColor().equals(j.getInkColor()) && q.getPaperColor().equals(j.getPaperColor()))) {
             j = new Job(false);
         }
         q.enqueue(j);
         q.update();
-        assertTrue(q.peek(0).getContained());
+        assertTrue(q.peek(0).isContained());
     }
 
     @Test
