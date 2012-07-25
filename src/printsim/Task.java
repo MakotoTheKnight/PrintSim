@@ -31,7 +31,7 @@ public abstract class Task {
      */
     @Override
     public String toString() {
-	    return "";
+        return "";
     }
 
     /**
@@ -40,7 +40,7 @@ public abstract class Task {
      */
 
     public int getTaskNumber() {
-	    return taskNumber;
+        return taskNumber;
     }
 
     /**
@@ -49,41 +49,41 @@ public abstract class Task {
      */
 
     public int getIdleTime() {
-	    return timeIdle;
+        return timeIdle;
     }
 
     public int getQNumber() {
-	    return qNumber;
+        return qNumber;
     }
 
     public int getTimeComplete() {
-	    return timeComplete;
+        return timeComplete;
     }
 
     public int getTimeCreated() {
-	    return timeCreated;
+        return timeCreated;
     }
 
     public int getTimeWorking() {
-	    return timeWorking;
+        return timeWorking;
     }
 
     public void setQNumber(int newQ) {
-	    qNumber = (newQ != qNumber) ? newQ : qNumber;
+        qNumber = (newQ != qNumber) ? newQ : qNumber;
     }
 
     public boolean getContained() {
-	    return contained;
+        return contained;
     }
     public void setContained() {
         if(!contained) {
-	        contained = true;
-	    }
+            contained = true;
+        }
     }
 
     public void unsetContained() {
         if(contained) {
-	        contained = false;
-	    }
+            contained = false;
+        }
     }
 }
