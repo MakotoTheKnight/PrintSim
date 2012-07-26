@@ -5,17 +5,20 @@
 
 package testing;
 
+import org.junit.Test;
+import printsim.Clock;
 import printsim.Job;
 import printsim.Queue;
-import printsim.Clock;
-import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class JobTest {
 
     @Test
     public void testJobNumber() {
         assertTrue(new Job(false).getTaskNumber() >= 1);
+        assertFalse(false);
     }
 
     @Test
@@ -79,5 +82,4 @@ public class JobTest {
         q.update();
         assertTrue(q.peek(0).canPrint());
     }
-
 }

@@ -1,52 +1,78 @@
 package testing;
 
+import org.junit.Before;
 import org.junit.Test;
-import printsim.Queue;
 import printsim.Job;
+import printsim.Queue;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class QueueTest {
 
+    private Queue testQueue;
+    private Job testJob;
+
+
+    @Before
+    public void setUp() {
+        testQueue = new Queue(1, "White", "Black");
+        do {
+            testJob = new Job(false);
+        } while(!(testJob.getPaperColor().equals(testQueue.getPaperColor())
+                    && testJob.getInkColor().equals(testQueue.getInkColor())));
+        testQueue.enqueue(testJob);
+    }
+
     @Test
     public void testConstructor() {
-        Queue q = new Queue(1, "White", "Black");
-        assertTrue(q.getQueueID() == 1);
-        assertTrue(q.getPaperColor().equals("White"));
-        assertTrue(q.getInkColor().equals("Black"));
+        assertTrue(testQueue.getQueueID() == 1);
+        assertTrue(testQueue.getPaperColor().equals("White"));
+        assertTrue(testQueue.getInkColor().equals("Black"));
     }
 
     @Test
     public void testEnqueue() {
-        Queue q = new Queue(1, "White", "Black");
-        Job j;
-        do {
-            j = new Job(false);
-        } while(!(j.getPaperColor().equals(q.getPaperColor()) && j.getInkColor().equals(q.getInkColor())));
-        q.enqueue(j);
-        assertTrue(q.peek(0).getQNumber() == q.getQueueID());
-        assertTrue(q.peek(0).getInkColor().equals(q.getInkColor()));
-        assertTrue(q.peek(0).getPaperColor().equals(q.getPaperColor()));
-        assertTrue(q.peek(0).isContained());
+        assertTrue(testQueue.peek(0).getQNumber() == testQueue.getQueueID());
+        assertTrue(testQueue.peek(0).getInkColor().equals(testQueue.getInkColor()));
+        assertTrue(testQueue.peek(0).getPaperColor().equals(testQueue.getPaperColor()));
+        assertTrue(testQueue.peek(0).isContained());
     }
 
     @Test
     public void testDequeue() {
-        Queue q = new Queue(1, "White", "Black");
-        Job j;
         Job k;
-        do {
-            j = new Job(false);
-        } while(!(j.getPaperColor().equals(q.getPaperColor()) && j.getInkColor().equals(q.getInkColor())));
-        q.enqueue(j);
-        k = q.dequeue();
-        assertTrue(k.getQNumber() == q.getQueueID());
-        assertTrue(q.getInkColor().equals(k.getInkColor()));
-        assertTrue(q.getPaperColor().equals(k.getPaperColor()));
+        k = testQueue.dequeue();
+        assertTrue(k.getQNumber() == testQueue.getQueueID());
+        assertTrue(testQueue.getInkColor().equals(k.getInkColor()));
+        assertTrue(testQueue.getPaperColor().equals(k.getPaperColor()));
         assertFalse(k.isContained());
-
     }
 
+    @Test
+    public void testUpdate() {
+        testQueue.update();
+        assertFalse(testQueue.isAttached());
+        for(int i = 0; i < testQueue.getSize(); i++) {
+            assertTrue(testQueue.peek(i).isContained());
+            assertTrue(testQueue.peek(i).getIdleTime() > 0);
+        }
+    }
 
+    @Test
+    public void testAttach() {
+        assertTrue(testQueue.canSymlink());
+        testQueue.setAttached();
+        assertTrue(testQueue.isAttached());
+        assertFalse(testQueue.isSoftlinked());
+    }
 
+    @Test
+    public void testDetach() {
+        testQueue.setAttached();
+        assertTrue(testQueue.isAttached());
+        testQueue.detach();
+        assertFalse(testQueue.isAttached());
+        assertFalse(testQueue.isSoftlinked());
+    }
 }

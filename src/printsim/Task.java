@@ -72,7 +72,7 @@ public abstract class Task {
         qNumber = (newQ != qNumber) ? newQ : qNumber;
     }
 
-    public boolean getContained() {
+    public boolean isContained() {
         return contained;
     }
     public void setContained() {
