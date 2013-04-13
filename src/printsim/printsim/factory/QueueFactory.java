@@ -15,7 +15,7 @@ public class QueueFactory {
 
     public static synchronized Queue[] createQueues() {
         if(!isSet) {
-            final Queue[] tempQueues = new Queue[Clock.maxQueues()];
+            final Queue[] tempQueues = new Queue[Clock.getMaxQueues()];
             int i = 0;
             for (PaperColor paper : PaperColor.values()) {
                 for (InkColor ink : InkColor.values()) {

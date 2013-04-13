@@ -28,7 +28,7 @@ public class QueueFactoryTest {
 
         //then
         int i = 1;
-        assertTrue(result.length == Clock.maxQueues());
+        assertTrue(result.length == Clock.getMaxQueues());
         for (Queue q : result) {
             assertTrue("Color generated not in the ink color set",
                     inkColors.contains(q.getInkColor()));
