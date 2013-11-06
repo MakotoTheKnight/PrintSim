@@ -1,4 +1,4 @@
-package printsim;
+package org.latlonproject.printsim;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -7,29 +7,22 @@ public class Queue implements ClockEvent {
 
     private List<Job> queue = new LinkedList<>();
     private int printerId;
-    private int queueId;
-    private int attachLength;
+    private static int id = 1;
     private boolean isAttached;
-    private boolean isSoftlinked;
-    private final InkColor INK_COLOR;
-    private final PaperColor PAPER_COLOR;
+    private final InkColor inkColor;
+    private final PaperColor paperColor;
+    private int attachLength;
 
-    public Queue(int id, PaperColor paperPaperColor, InkColor inkColor) {
-        queueId = id;
-        PAPER_COLOR = paperPaperColor;
-        INK_COLOR = inkColor;
-        printerId = 0;
-        attachLength = 0;
-        isSoftlinked = false;
-        isAttached = false;
-
+    public Queue(PaperColor paperColor, InkColor inkColor) {
+        this.paperColor = paperColor;
+        this.inkColor = inkColor;
     }
 
     /* toString():  Return the String status of any object. */
     public String toString() {
 
-        return "Queue #" + queueId + " {" + PAPER_COLOR + " paper, " +
-                INK_COLOR + " ink, total size " + queue.size() + "}";
+        return "Queue #" + id + " {" + paperColor + " paper, " +
+                inkColor + " ink, total size " + queue.size() + "}";
     }
 
 
@@ -41,7 +34,7 @@ public class Queue implements ClockEvent {
         }
         for (Job j : queue) {
             j.update();
-            j.setQueueNumber(queueId);
+            j.setQueueNumber(this.id);
         }
     }
 
@@ -53,12 +46,9 @@ public class Queue implements ClockEvent {
         return queue.size() == 0;
     }
 
-    public boolean isSoftlinked() {
-        return isSoftlinked;
-    }
 
     public boolean canSymlink() {
-        return !(isEmpty()) && !(isAttached) && !(isSoftlinked);
+        return !(isEmpty()) && !(isAttached);
     }
 
     public boolean canDetach() {
@@ -66,7 +56,7 @@ public class Queue implements ClockEvent {
     }
 
     public int getQueueID() {
-        return queueId;
+        return id;
     }
 
     public int getSize() {
@@ -83,25 +73,22 @@ public class Queue implements ClockEvent {
 
     public void setAttached() {
         isAttached = true;
-        isSoftlinked = false;
     }
 
     public void setSoftlinked() {
-        isSoftlinked = true;
         isAttached = false;
     }
 
     public void detach() {
-        isSoftlinked = isAttached = false;
         printerId = 0;
     }
 
     public InkColor getInkColor() {
-        return INK_COLOR;
+        return inkColor;
     }
 
     public PaperColor getPaperColor() {
-        return PAPER_COLOR;
+        return paperColor;
     }
 
     public Job peek(int number) {
@@ -113,8 +100,8 @@ public class Queue implements ClockEvent {
     }
 
     public void enqueue(Job j) {
-        if (j.getPaperColor().equals(PAPER_COLOR) && j.getInkColor().equals(INK_COLOR)) {
-            j.setQueueNumber(queueId);
+        if (j.getPaperColor().equals(paperColor) && j.getInkColor().equals(inkColor)) {
+            j.setQueueNumber(this.id);
             j.setQueued();
             queue.add(j);
         }

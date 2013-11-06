@@ -1,4 +1,4 @@
-package printsim;
+package org.latlonproject.printsim;
 
 import org.junit.Test;
 

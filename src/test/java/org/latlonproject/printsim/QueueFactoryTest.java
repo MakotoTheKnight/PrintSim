@@ -1,10 +1,7 @@
-package printsim.factory;
+package org.latlonproject.printsim;
 
 import org.junit.Test;
-import printsim.Clock;
-import printsim.InkColor;
-import printsim.PaperColor;
-import printsim.Queue;
+import org.latlonproject.printsim.factory.QueueFactory;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -24,7 +21,7 @@ public class QueueFactoryTest {
         generateColorSets();
 
         //when
-        Queue[] result = printsim.factory.QueueFactory.createQueues();
+        Queue[] result = QueueFactory.createQueues();
 
         //then
         int i = 1;
@@ -49,8 +46,8 @@ public class QueueFactoryTest {
         generateColorSets();
 
         //when
-        Queue[] result1 = printsim.factory.QueueFactory.createQueues();
-        Queue[] result2 = printsim.factory.QueueFactory.createQueues();
+        Queue[] result1 = QueueFactory.createQueues();
+        Queue[] result2 = QueueFactory.createQueues();
 
         //then
         assertSame(result2, result1);

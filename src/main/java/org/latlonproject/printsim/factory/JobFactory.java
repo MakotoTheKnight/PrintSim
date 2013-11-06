@@ -1,9 +1,9 @@
-package printsim.factory;
+package org.latlonproject.printsim.factory;
 
-import printsim.Clock;
-import printsim.InkColor;
-import printsim.Job;
-import printsim.PaperColor;
+import org.latlonproject.printsim.Clock;
+import org.latlonproject.printsim.InkColor;
+import org.latlonproject.printsim.Job;
+import org.latlonproject.printsim.PaperColor;
 
 public class JobFactory {
 

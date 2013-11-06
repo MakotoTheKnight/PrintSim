@@ -4,4 +4,8 @@
 *.jar
 *.war
 *.ear
-/nbproject/private/
+.gradle
+*.iml
+*.ipr
+*.iws
+gradle/

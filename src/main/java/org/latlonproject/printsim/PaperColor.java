@@ -1,4 +1,4 @@
-package printsim;
+package org.latlonproject.printsim;
 
 public enum PaperColor {
     WHITE,

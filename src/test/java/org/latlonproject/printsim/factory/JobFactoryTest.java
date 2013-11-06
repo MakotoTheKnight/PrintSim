@@ -1,11 +1,10 @@
-package printsim.factory;
+package org.latlonproject.printsim.factory;
 
 import org.junit.Test;
-import printsim.Clock;
-import printsim.InkColor;
-import printsim.Job;
-import printsim.factory.JobFactory;
-import printsim.PaperColor;
+import org.latlonproject.printsim.Clock;
+import org.latlonproject.printsim.InkColor;
+import org.latlonproject.printsim.Job;
+import org.latlonproject.printsim.PaperColor;
 
 import java.util.HashSet;
 import java.util.Set;

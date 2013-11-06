@@ -7,7 +7,7 @@
     Written by Jason Black, 29 October 2008
 */
 
-package printsim;
+package org.latlonproject.printsim;
 
 import java.io.IOException;
 import java.util.Scanner;

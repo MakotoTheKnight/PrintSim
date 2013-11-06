@@ -1,9 +1,9 @@
-package printsim.factory;
+package org.latlonproject.printsim.factory;
 
-import printsim.Clock;
-import printsim.InkColor;
-import printsim.PaperColor;
-import printsim.Queue;
+import org.latlonproject.printsim.Clock;
+import org.latlonproject.printsim.InkColor;
+import org.latlonproject.printsim.PaperColor;
+import org.latlonproject.printsim.Queue;
 
 public class QueueFactory {
 
@@ -19,7 +19,7 @@ public class QueueFactory {
             int i = 0;
             for (PaperColor paper : PaperColor.values()) {
                 for (InkColor ink : InkColor.values()) {
-                    tempQueues[i] = new Queue(i+1, paper, ink);
+                    tempQueues[i] = new Queue(paper, ink);
                     i++;
                 }
             }

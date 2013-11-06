@@ -1,6 +1,6 @@
-package printsim;
+package org.latlonproject.printsim;
 
-public interface IPrinter {
+public interface Printer {
 
     public void print();
 
